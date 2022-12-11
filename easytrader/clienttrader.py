@@ -464,7 +464,7 @@ class ClientTrader(IClientTrader):
 
         self._type_edit_control_keys(
             self._config.TRADE_PRICE_CONTROL_ID,
-            easyutils.round_price_by_code(price, code),
+            easyutils.round_price_by_code(price, code), clear_box=True
         )
         self._type_edit_control_keys(
             self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount))
@@ -494,7 +494,7 @@ class ClientTrader(IClientTrader):
             text
         )
 
-    def _type_edit_control_keys(self, control_id, text):
+    def _type_edit_control_keys(self, control_id, text, clear_box=False):
         if not self._editor_need_type_keys:
             self._main.child_window(
                 control_id=control_id, class_name="Edit"
@@ -502,6 +502,14 @@ class ClientTrader(IClientTrader):
         else:
             editor = self._main.child_window(control_id=control_id, class_name="Edit")
             editor.select()
+            if clear_box is True:  # THS_9.10.81 price box is not selectable, clear it manually
+                editor.type_keys('{BS}')
+                editor.type_keys('{BS}')
+                editor.type_keys('{BS}')
+                editor.type_keys('{BS}')
+                editor.type_keys('{BS}')
+                editor.type_keys('{BS}')
+                editor.type_keys('{BS}')
             editor.type_keys(text)
 
     def type_edit_control_keys(self, editor, text):
