@@ -21,6 +21,7 @@ from easytrader.refresh_strategies import IRefreshStrategy
 from easytrader.utils.misc import file2dict
 from easytrader.utils.perf import perf_clock
 
+
 if not sys.platform.startswith("darwin"):
     import pywinauto
     import pywinauto.clipboard
@@ -503,13 +504,9 @@ class ClientTrader(IClientTrader):
             editor = self._main.child_window(control_id=control_id, class_name="Edit")
             editor.select()
             if clear_box is True:  # THS_9.10.81 price box is not selectable, clear it manually
-                editor.type_keys('{BS}')
-                editor.type_keys('{BS}')
-                editor.type_keys('{BS}')
-                editor.type_keys('{BS}')
-                editor.type_keys('{BS}')
-                editor.type_keys('{BS}')
-                editor.type_keys('{BS}')
+                for i in range(7):
+                    editor.type_keys('{BS}')
+                    time.sleep(0.1)  # wait price quatation
             editor.type_keys(text)
 
     def type_edit_control_keys(self, editor, text):
